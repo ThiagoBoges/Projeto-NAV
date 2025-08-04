@@ -1,0 +1,40 @@
+USE dbThiagoSousa01;
+GO
+
+DELETE FROM titulos;
+DELETE FROM contratos;
+DELETE FROM titulares;
+GO
+
+INSERT INTO titulares (nome, cep, logradouro) VALUES
+('Thiago Borges', '63010-060', 'Rua São Pedro');
+
+INSERT INTO titulares (nome, cep, logradouro) VALUES
+('Eymar', '63010-010', 'Rua Padre Cícero');
+GO
+
+
+INSERT INTO contratos (titular_id) VALUES
+((SELECT id FROM titulares WHERE nome = 'Thiago Borges'));
+GO
+
+
+INSERT INTO contratos (titular_id) VALUES
+((SELECT id FROM titulares WHERE nome = 'Eymar'));
+GO
+
+INSERT INTO titulos (contrato_id, valor, data_vencimento, data_pagamento, valor_pago) VALUES
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Thiago Borges')), 100.00, '2024-12-15', '2024-12-10', 100.00),
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Thiago Borges')), 120.00, '2025-01-20', '2025-01-18', 120.00),
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Thiago Borges')), 80.00, '2025-02-05', NULL, NULL), 
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Thiago Borges')), 90.00, '2025-03-10', NULL, NULL),
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Thiago Borges')), 110.00, '2025-08-01', NULL, NULL);
+GO
+
+INSERT INTO titulos (contrato_id, valor, data_vencimento, data_pagamento, valor_pago) VALUES
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Eymar')), 75.00, '2024-11-20', NULL, NULL), 
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Eymar')), 95.00, '2024-12-01', NULL, NULL), 
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Eymar')), 60.00, '2025-01-10', NULL, NULL), 
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Eymar')), 85.00, '2025-02-25', '2025-02-20', 85.00), 
+((SELECT id FROM contratos WHERE titular_id = (SELECT id FROM titulares WHERE nome = 'Eymar')), 105.00, '2025-09-15', NULL, NULL); 
+GO

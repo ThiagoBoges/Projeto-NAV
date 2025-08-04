@@ -1,0 +1,18 @@
+SELECT
+    c.id AS contrato_id,
+    t.nome AS nome_titular,
+    CASE
+        WHEN COUNT(CASE WHEN ti.data_vencimento < GETDATE() AND ti.data_pagamento IS NULL THEN 1 END) >= 3 THEN 'INATIVO'
+        ELSE 'ATIVO'
+    END AS status_contrato,
+    COALESCE(SUM(CASE WHEN ti.data_vencimento < GETDATE() AND ti.data_pagamento IS NULL THEN ti.valor ELSE 0 END), 0) AS montante_atrasado
+FROM
+    contratos c
+JOIN
+    titulares t ON c.titular_id = t.id
+LEFT JOIN
+    titulos ti ON c.id = ti.contrato_id
+GROUP BY
+    c.id, t.nome
+ORDER BY
+    c.id;

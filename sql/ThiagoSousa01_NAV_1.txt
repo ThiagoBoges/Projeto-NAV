@@ -1,0 +1,28 @@
+USE dbThiagoSousa01;
+GO
+
+CREATE TABLE titulares (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cep VARCHAR(9) NOT NULL,
+    logradouro VARCHAR(255) NOT NULL
+);
+GO
+
+CREATE TABLE contratos (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    titular_id INT NOT NULL FOREIGN KEY REFERENCES titulares(id),
+    data_contrato DATE NOT NULL DEFAULT GETDATE(),
+    total_pago NUMERIC(10, 2) DEFAULT 0.00
+);
+GO
+
+CREATE TABLE titulos (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    contrato_id INT NOT NULL FOREIGN KEY REFERENCES contratos(id),
+    valor NUMERIC(10, 2) NOT NULL,
+    data_vencimento DATE NOT NULL,
+    data_pagamento DATE, -- NULL se não pago
+    valor_pago NUMERIC(10, 2) -- Valor pago, pode ser diferente do valor original em caso de juros/descontos
+);
+GO
